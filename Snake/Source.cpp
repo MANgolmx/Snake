@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 		printf("Couldn't init SDL!  %s\n", SDL_GetError());
 		exit(1);
 	}
-	SDL_Window* win = SDL_CreateWindow("Create!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_width, win_height,
+	SDL_Window* win = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_width, win_height,
 		(SDL_WINDOW_SHOWN));
 	if (win == NULL)
 	{
@@ -192,8 +192,6 @@ int main(int argc, char** argv)
 		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 		SDL_RenderClear(ren);
 
-	//	SDL_RenderCopy(ren, tex_bg, NULL, NULL);
-	//	SDL_RenderCopy(ren, tex_fl, NULL, &dst_fl);
 		counter = 0;
 		while (counter < 384) {
 			if (snake.GetSneakdst()[counter].w != 50) break;
@@ -214,9 +212,8 @@ int main(int argc, char** argv)
 
 #pragma region end
 
-	//SDL_DestroyTexture(tex_bg);
-	//SDL_DestroyTexture(tex_fl);
 	SDL_DestroyTexture(tex_pl);
+	SDL_DestroyTexture(tex_ap);
 	SDL_DestroyRenderer(ren);
 	SDL_DestroyWindow(win);
 	SDL_Quit();
