@@ -3,16 +3,14 @@
 
 Snake::Snake()
 {
-	parts = 0;
 	head = new SnakePart(0, 50);
-	head->AddPart(1, head->direction, head->speed);
-	head->next->AddPart(1, head->direction, head->speed);
-	head->next->next->AddPart(1, head->direction, head->speed);
+	this->Grow();
+	this->Grow();
+	this->Grow();
 }
 
 Snake::Snake(const Snake& s)
 {
-	parts = s.parts;
 	head = s.head;
 }
 
@@ -55,8 +53,7 @@ void Snake::Grow()
 {
 	SnakePart* tmp;
 	for (tmp = head; tmp->next != NULL; tmp = tmp->next);
-
-	tmp->AddPart(parts, tmp->direction, GetSpeed());
+	tmp->AddPart(tmp->direction, GetSpeed());
 }
 
 void Snake::Death()
@@ -81,7 +78,7 @@ void Snake::SetHeaddst(int x, int y, int w, int h)
 	dst_pl.h = h;
 }
 
-SDL_Rect* Snake::SetSneakdst()
+SDL_Rect* Snake::SetSnakedst()
 {
 	SnakePart* tmp;
 	int counter = 0;
@@ -120,7 +117,7 @@ SDL_Rect* Snake::SetSneakdst()
 	return rects;
 }
 
-SDL_Rect* Snake::GetSneakdst()
+SDL_Rect* Snake::GetSnakedst()
 {
 	return rects;
 }
@@ -149,7 +146,7 @@ Snake::SnakePart::~SnakePart()
 {
 }
 
-void Snake::SnakePart::AddPart(int parts, int direction, int speed)
+void Snake::SnakePart::AddPart(int direction, int speed)
 {
 	this->next = new SnakePart(direction, speed, this);
 }

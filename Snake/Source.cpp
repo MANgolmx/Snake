@@ -3,6 +3,8 @@
 #include <SDL_image.h>
 #include "Snake.h"
 
+#define BL_SIZE 50
+
 int random(int a, int b)
 {
 	return rand() % (b - a + 1) + a;
@@ -43,6 +45,7 @@ int main(int argc, char** argv)
 	bool isRunning = true;
 	int counter, counter2;
 	int delay = 400;
+	int sq;
 
 	SDL_Event ev;
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
@@ -143,14 +146,14 @@ int main(int argc, char** argv)
 			delay--;
 
 			randomize:
-			int a = random(0, 345);
-			while (snake.GetSneakdst()[counter2].w == 50) {
-				if (snake.GetSneakdst()[counter2].x == a % 23 * 50 &&
-					snake.GetSneakdst()[counter2].y == a % 15 * 50)
+			sq = random(0, 345);
+			while (snake.GetSnakedst()[counter2].w == BL_SIZE) {
+				if (snake.GetSnakedst()[counter2].x == sq % 23 * BL_SIZE &&
+					snake.GetSnakedst()[counter2].y == sq % 15 * BL_SIZE)
 					goto randomize;
 				counter2++;
 			}
-			dst_ap = { a % 23 * 50, a % 15 * 50, surf->w, surf->h };
+			dst_ap = { sq % 23 * BL_SIZE, sq % 15 * BL_SIZE, BL_SIZE, BL_SIZE };
 		}
 
 		switch (snake.GetDirection())
@@ -161,21 +164,21 @@ int main(int argc, char** argv)
 		case 3:	snake.SetHeaddst(snake.GetHeaddst().x - snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
 		}
 
-		if ((snake.GetHeaddst().x < 0 ||
+		if (!snake.IsPortals() && 
+			(snake.GetHeaddst().x < 0 ||
 			snake.GetHeaddst().x + snake.GetHeaddst().w > win_width ||
 			snake.GetHeaddst().y < 0 ||
-			snake.GetHeaddst().y + snake.GetHeaddst().h > win_height) &&
-			!snake.IsPortals())
+			snake.GetHeaddst().y + snake.GetHeaddst().h > win_height))
 			snake.Death();
 
 		counter2 = 0;
 		counter = 0;
-		while (snake.GetSneakdst()[counter].w == 50)
+		while (snake.GetSnakedst()[counter].w == BL_SIZE)
 		{
-			while (snake.GetSneakdst()[counter2].w == 50)
+			while (snake.GetSnakedst()[counter2].w == BL_SIZE)
 			{
-				if (snake.GetSneakdst()[counter].x == snake.GetSneakdst()[counter2].x &&
-					snake.GetSneakdst()[counter].y == snake.GetSneakdst()[counter2].y &&
+				if (snake.GetSnakedst()[counter].x == snake.GetSnakedst()[counter2].x &&
+					snake.GetSnakedst()[counter].y == snake.GetSnakedst()[counter2].y &&
 					counter != counter2)
 					snake.Death();
 				counter2++;
@@ -183,6 +186,7 @@ int main(int argc, char** argv)
 			counter++;
 		}
 
+		snake.SetSnakedst();
 
 #pragma endregion logic
 
@@ -193,9 +197,8 @@ int main(int argc, char** argv)
 		SDL_RenderClear(ren);
 
 		counter = 0;
-		while (counter < 384) {
-			if (snake.GetSneakdst()[counter].w != 50) break;
-			SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.SetSneakdst()[counter], 0, NULL, SDL_FLIP_NONE);
+		while (snake.GetSnakedst()[counter].w == BL_SIZE) {
+			SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
 			counter++;
 		}
 		SDL_RenderCopyEx(ren, tex_ap, NULL, &dst_ap, 0, NULL, SDL_FLIP_NONE);
@@ -204,7 +207,7 @@ int main(int argc, char** argv)
 		SDL_Delay(delay);
 
 		snake.SetPartsDirections();
-		snake.SetSneakdst();
+		snake.SetSnakedst();
 
 #pragma endregion rendering
 

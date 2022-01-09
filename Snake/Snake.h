@@ -16,13 +16,12 @@ private:
 		SnakePart(const SnakePart& s);
 		~SnakePart();
 
-		void AddPart(int parts, int direction, int speed);
+		void AddPart(int direction, int speed);
 	};
 
 	SDL_Rect rects[384];
 	SDL_Rect dst_pl = { 600, 400, 50, 50};
 	SnakePart* head;
-	int parts = 0;
 	bool isDead = false;
 	bool portals = true;
 
@@ -46,6 +45,6 @@ public:
 
 	SDL_Rect GetHeaddst();
 	void SetHeaddst(int x = 0, int y = 0, int w = 50, int h = 50);
-	SDL_Rect* SetSneakdst();
-	SDL_Rect* GetSneakdst();
+	SDL_Rect* SetSnakedst();
+	SDL_Rect* GetSnakedst();
 };
