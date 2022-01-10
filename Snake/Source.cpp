@@ -79,11 +79,18 @@ int main(int argc, char** argv)
 	}
 
 	SDL_Color white = { 255,255,255,255 };
+
 	std::string start = "START";
-	SDL_Texture* tex_start = renderText(start, "fonts\\Roboto\\Roboto-Light.ttf", white, 64, renderer);
-	int tw, th;
-	SDL_QueryTexture(tex_start, NULL, NULL, &tw, &th);
-	SDL_Rect dst_start = { win_width / 2 - tw / 2, win_height / 2 - 80, tw, th };
+	SDL_Texture* tex_start = renderText(start, "fonts\\Roboto\\Roboto-Light.ttf", white, 128, renderer);
+	int start_w, start_h;
+	SDL_QueryTexture(tex_start, NULL, NULL, &start_w, &start_h);
+	SDL_Rect dst_start = { win_width / 2 - start_w / 2, win_height / 2 - 80, start_w, start_h };
+	
+	int settings_w, settings_h;
+	std::string settings = "SETTINGS";
+	SDL_Texture* tex_settings = renderText(settings, "fonts\\Roboto\\Roboto-Light.ttf", white, 64, renderer);
+	SDL_QueryTexture(tex_settings, NULL, NULL, &settings_w, &settings_h);
+	SDL_Rect dst_settings = { dst_start.x + (start_w - settings_w) / 2,dst_start.y + 150,settings_w,settings_h };
 
 	bool isRunning = true;
 	bool inMenu = true;
@@ -249,7 +256,7 @@ int main(int argc, char** argv)
 		if (inMenu) {
 			
 			SDL_RenderCopyEx(renderer, tex_start, NULL, &dst_start, 0, NULL, SDL_FLIP_NONE);
-			//SDL_RenderCopyEx(renderer, tex_st, NULL, &dst_st, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(renderer, tex_settings, NULL, &dst_settings, 0, NULL, SDL_FLIP_NONE);
 			SDL_RenderPresent(renderer);
 		}
 		if (!inMenu && !inSettings) {
