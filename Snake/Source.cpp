@@ -157,7 +157,10 @@ int main(int argc, char** argv)
 				int mx, my;
 				SDL_GetMouseState(&mx, &my);
 				if (isBelong(mx, my, dst_st))
+				{
 					inMenu = false;
+					SDL_DestroyTexture(tex_st);
+				}
 				break;
 			}
 		}
