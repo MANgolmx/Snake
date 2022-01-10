@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include "Snake.h"
 
 #define BL_SIZE 50
@@ -50,8 +51,14 @@ int main(int argc, char** argv)
 	if (!(r & IMG_INIT_PNG))
 		printf("We cann't use PNG files!");
 
+	if (TTF_Init() < 0) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(2);
+	}
+
 	bool isRunning = true;
 	bool inMenu = true;
+	bool inSettings = false;
 	int counter, counter2;
 	int delay = 400;
 	int sq;
@@ -104,6 +111,9 @@ int main(int argc, char** argv)
 		printf("Texture wasn't load!  %s\n", SDL_GetError());
 		exit(1);
 	}
+
+	
+
 	/*
 	SDL_Texture* tex_bg = SDL_CreateTextureFromSurface(ren, surf);
 	if (tex_bg == NULL)
@@ -156,8 +166,7 @@ int main(int argc, char** argv)
 			case SDL_MOUSEBUTTONDOWN:
 				int mx, my;
 				SDL_GetMouseState(&mx, &my);
-				if (isBelong(mx, my, dst_st))
-				{
+				if (isBelong(mx, my, dst_st)) {
 					inMenu = false;
 					SDL_DestroyTexture(tex_st);
 				}
@@ -170,7 +179,7 @@ int main(int argc, char** argv)
 
 #pragma region logic
 
-		if (!inMenu)
+		if (!inMenu && !inSettings)
 		{
 			counter2 = 0;
 			if (snake.GetHeaddst().x == dst_ap.x &&
@@ -229,7 +238,7 @@ int main(int argc, char** argv)
 			SDL_RenderCopyEx(ren, tex_st, NULL, &dst_st, 0, NULL, SDL_FLIP_NONE);
 			SDL_RenderPresent(ren);
 		}
-		if (!inMenu) {
+		if (!inMenu && !inSettings) {
 			counter = 0;
 			while (snake.GetSnakedst()[counter].w == BL_SIZE) {
 				SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);

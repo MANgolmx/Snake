@@ -72,19 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <ReferencePath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <ReferencePath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <ReferencePath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <ReferencePath>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,12 +96,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,6 +121,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,12 +130,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,7 +147,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\include;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,6 +155,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\misam\source\repos\Snake\Snake\SDL2-2.0.14\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_ttf-2.0.15\lib\x64;C:\Users\misam\source\repos\Snake\Snake\SDL2_image-2.0.5\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

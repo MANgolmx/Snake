@@ -39,6 +39,7 @@ public:
 	
 	int GetSpeed();
 	bool IsPortals();
+	void SetPortals(bool port);
 
 	void Grow();
 	void Death();
