@@ -10,6 +10,14 @@ int random(int a, int b)
 	return rand() % (b - a + 1) + a;
 }
 
+bool isBelong(int x, int y, SDL_Rect r)
+{
+	if (x >= r.x && x <= r.x + r.w &&
+		y >= r.y && y <= r.y + r.h)
+		return true;
+	return false;
+}
+
 int main(int argc, char** argv)
 {
 	srand(time(0));
@@ -43,6 +51,7 @@ int main(int argc, char** argv)
 		printf("We cann't use PNG files!");
 
 	bool isRunning = true;
+	bool inMenu = true;
 	int counter, counter2;
 	int delay = 400;
 	int sq;
@@ -75,12 +84,26 @@ int main(int argc, char** argv)
 
 	SDL_Rect dst_ap = { 150, 600, surf->w, surf->h};
 	SDL_Texture* tex_ap = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_pl == NULL)
+	if (tex_ap == NULL)
 	{
 		printf("Texture wasn't load!  %s\n", SDL_GetError());
 		exit(1);
 	}
 
+	surf = IMG_Load("Images/START.png");
+	if (surf == NULL)
+	{
+		printf("Picture wasn't load!  %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	SDL_Rect dst_st = { win_width / 2 - surf->w / 2, win_height / 2 - 80, surf->w, surf->h };
+	SDL_Texture* tex_st = SDL_CreateTextureFromSurface(ren, surf);
+	if (tex_st == NULL)
+	{
+		printf("Texture wasn't load!  %s\n", SDL_GetError());
+		exit(1);
+	}
 	/*
 	SDL_Texture* tex_bg = SDL_CreateTextureFromSurface(ren, surf);
 	if (tex_bg == NULL)
@@ -130,6 +153,12 @@ int main(int argc, char** argv)
 				case SDL_SCANCODE_LEFT: if (snake.GetDirection() != 1) snake.SetDirection(3); break;
 				}
 				break;
+			case SDL_MOUSEBUTTONDOWN:
+				int mx, my;
+				SDL_GetMouseState(&mx, &my);
+				if (isBelong(mx, my, dst_st))
+					inMenu = false;
+				break;
 			}
 		}
 
@@ -138,55 +167,53 @@ int main(int argc, char** argv)
 
 #pragma region logic
 
-		counter2 = 0;
-		if (snake.GetHeaddst().x == dst_ap.x &&
-			snake.GetHeaddst().y == dst_ap.y)
+		if (!inMenu)
 		{
-			snake.Grow();
-			delay--;
+			counter2 = 0;
+			if (snake.GetHeaddst().x == dst_ap.x &&
+				snake.GetHeaddst().y == dst_ap.y)
+			{
+				snake.Grow();
+				delay--;
 
 			randomize:
-			sq = random(0, 345);
-			while (snake.GetSnakedst()[counter2].w == BL_SIZE) {
-				if (snake.GetSnakedst()[counter2].x == sq % 23 * BL_SIZE &&
-					snake.GetSnakedst()[counter2].y == sq % 15 * BL_SIZE)
-					goto randomize;
-				counter2++;
+				sq = random(0, 345);
+				while (snake.GetSnakedst()[counter2].w == BL_SIZE) {
+					if (snake.GetSnakedst()[counter2].x == sq % 23 * BL_SIZE &&
+						snake.GetSnakedst()[counter2].y == sq % 15 * BL_SIZE)
+						goto randomize;
+					counter2++;
+				}
+				dst_ap = { sq % 23 * BL_SIZE, sq % 15 * BL_SIZE, BL_SIZE, BL_SIZE };
 			}
-			dst_ap = { sq % 23 * BL_SIZE, sq % 15 * BL_SIZE, BL_SIZE, BL_SIZE };
-		}
 
-		switch (snake.GetDirection())
-		{
-		case 0: snake.SetHeaddst(snake.GetHeaddst().x, snake.GetHeaddst().y - snake.GetSpeed(), snake.GetHeaddst().w, snake.GetHeaddst().h); break;
-		case 1:	snake.SetHeaddst(snake.GetHeaddst().x + snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
-		case 2: snake.SetHeaddst(snake.GetHeaddst().x, snake.GetHeaddst().y + snake.GetSpeed(), snake.GetHeaddst().w, snake.GetHeaddst().h); break;
-		case 3:	snake.SetHeaddst(snake.GetHeaddst().x - snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
-		}
-
-		if (!snake.IsPortals() && 
-			(snake.GetHeaddst().x < 0 ||
-			snake.GetHeaddst().x + snake.GetHeaddst().w > win_width ||
-			snake.GetHeaddst().y < 0 ||
-			snake.GetHeaddst().y + snake.GetHeaddst().h > win_height))
-			snake.Death();
-
-		counter2 = 0;
-		counter = 0;
-		while (snake.GetSnakedst()[counter].w == BL_SIZE)
-		{
-			while (snake.GetSnakedst()[counter2].w == BL_SIZE)
+			switch (snake.GetDirection())
 			{
-				if (snake.GetSnakedst()[counter].x == snake.GetSnakedst()[counter2].x &&
-					snake.GetSnakedst()[counter].y == snake.GetSnakedst()[counter2].y &&
-					counter != counter2)
-					snake.Death();
-				counter2++;
+			case 0: snake.SetHeaddst(snake.GetHeaddst().x, snake.GetHeaddst().y - snake.GetSpeed(), snake.GetHeaddst().w, snake.GetHeaddst().h); break;
+			case 1:	snake.SetHeaddst(snake.GetHeaddst().x + snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
+			case 2: snake.SetHeaddst(snake.GetHeaddst().x, snake.GetHeaddst().y + snake.GetSpeed(), snake.GetHeaddst().w, snake.GetHeaddst().h); break;
+			case 3:	snake.SetHeaddst(snake.GetHeaddst().x - snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
 			}
-			counter++;
-		}
 
-		snake.SetSnakedst();
+			if (!snake.IsPortals() &&
+					(snake.GetHeaddst().x < 0 ||
+					snake.GetHeaddst().x + snake.GetHeaddst().w > win_width ||
+					snake.GetHeaddst().y < 0 ||
+					snake.GetHeaddst().y + snake.GetHeaddst().h > win_height))
+				snake.Death();
+
+			snake.SetSnakedst();
+
+			counter = 1;
+			while (snake.GetSnakedst()[counter].w == BL_SIZE)
+			{
+				if (snake.GetSnakedst()[counter].x == snake.GetHeaddst().x &&
+					snake.GetSnakedst()[counter].y == snake.GetHeaddst().y)
+					snake.Death();
+				counter++;
+			}
+
+		}
 
 #pragma endregion logic
 
@@ -195,19 +222,24 @@ int main(int argc, char** argv)
 
 		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 		SDL_RenderClear(ren);
-
-		counter = 0;
-		while (snake.GetSnakedst()[counter].w == BL_SIZE) {
-			SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
-			counter++;
+		if (inMenu) {
+			SDL_RenderCopyEx(ren, tex_st, NULL, &dst_st, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderPresent(ren);
 		}
-		SDL_RenderCopyEx(ren, tex_ap, NULL, &dst_ap, 0, NULL, SDL_FLIP_NONE);
-		SDL_RenderPresent(ren);
+		if (!inMenu) {
+			counter = 0;
+			while (snake.GetSnakedst()[counter].w == BL_SIZE) {
+				SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
+				counter++;
+			}
+			SDL_RenderCopyEx(ren, tex_ap, NULL, &dst_ap, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderPresent(ren);
 
-		SDL_Delay(delay);
+			SDL_Delay(delay);
 
-		snake.SetPartsDirections();
-		snake.SetSnakedst();
+			snake.SetPartsDirections();
+			snake.SetSnakedst();
+		}
 
 #pragma endregion rendering
 
