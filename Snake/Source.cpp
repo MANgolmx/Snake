@@ -19,12 +19,34 @@ bool isBelong(int x, int y, SDL_Rect r)
 	return false;
 }
 
+SDL_Texture* renderText(std::string& message, const std::string& fontFile, SDL_Color color, int fontSize, SDL_Renderer* renderer)
+{
+	//Открываем шрифт
+	TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
+	if (font == nullptr)
+		return nullptr;
+
+	//Сначала нужно отобразить на поверхность с помощью TTF_RenderText,
+	//затем загрузить поверхность в текстуру
+	SDL_Surface* surf = TTF_RenderText_Blended(font, message.c_str(), color);
+	if (surf == nullptr) {
+		TTF_CloseFont(font);
+		return nullptr;
+	}
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
+
+	//Очистка поверхности и шрифта
+	SDL_FreeSurface(surf);
+	TTF_CloseFont(font);
+	return texture;
+}
+
 int main(int argc, char** argv)
 {
 	srand(time(0));
-	Snake snake;
 
 #pragma region initialization
+	Snake snake;
 
 	int win_width = 1200, win_height = 800;
 
@@ -40,8 +62,8 @@ int main(int argc, char** argv)
 		printf("Couldn't create window!  %s\n", SDL_GetError());
 		exit(1);
 	}
-	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-	if (ren == NULL)
+	SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == NULL)
 	{
 		printf("Couldn't create window!  %s\n", SDL_GetError());
 		exit(1);
@@ -55,6 +77,13 @@ int main(int argc, char** argv)
 		printf("TTF Init error %s\n", TTF_GetError());
 		exit(2);
 	}
+
+	SDL_Color white = { 255,255,255,255 };
+	std::string start = "START";
+	SDL_Texture* tex_start = renderText(start, "fonts\\Roboto\\Roboto-Light.ttf", white, 64, renderer);
+	int tw, th;
+	SDL_QueryTexture(tex_start, NULL, NULL, &tw, &th);
+	SDL_Rect dst_start = { win_width / 2 - tw / 2, win_height / 2 - 80, tw, th };
 
 	bool isRunning = true;
 	bool inMenu = true;
@@ -75,8 +104,8 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 
-	SDL_Texture* tex_pl = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_pl == NULL)
+	SDL_Texture* tex_player = SDL_CreateTextureFromSurface(renderer, surf);
+	if (tex_player == NULL)
 	{
 		printf("Texture wasn't load!  %s\n", SDL_GetError());
 		exit(1);
@@ -89,30 +118,13 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 
-	SDL_Rect dst_ap = { 150, 600, surf->w, surf->h};
-	SDL_Texture* tex_ap = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_ap == NULL)
+	SDL_Rect dst_apple = { 150, 600, surf->w, surf->h};
+	SDL_Texture* tex_apple = SDL_CreateTextureFromSurface(renderer, surf);
+	if (tex_apple == NULL)
 	{
 		printf("Texture wasn't load!  %s\n", SDL_GetError());
 		exit(1);
 	}
-
-	surf = IMG_Load("Images/START.png");
-	if (surf == NULL)
-	{
-		printf("Picture wasn't load!  %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	SDL_Rect dst_st = { win_width / 2 - surf->w / 2, win_height / 2 - 80, surf->w, surf->h };
-	SDL_Texture* tex_st = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_st == NULL)
-	{
-		printf("Texture wasn't load!  %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	
 
 	/*
 	SDL_Texture* tex_bg = SDL_CreateTextureFromSurface(ren, surf);
@@ -166,9 +178,9 @@ int main(int argc, char** argv)
 			case SDL_MOUSEBUTTONDOWN:
 				int mx, my;
 				SDL_GetMouseState(&mx, &my);
-				if (isBelong(mx, my, dst_st)) {
+				if (isBelong(mx, my, dst_start)) {
 					inMenu = false;
-					SDL_DestroyTexture(tex_st);
+					SDL_DestroyTexture(tex_start);
 				}
 				break;
 			}
@@ -182,8 +194,8 @@ int main(int argc, char** argv)
 		if (!inMenu && !inSettings)
 		{
 			counter2 = 0;
-			if (snake.GetHeaddst().x == dst_ap.x &&
-				snake.GetHeaddst().y == dst_ap.y)
+			if (snake.GetHeaddst().x == dst_apple.x &&
+				snake.GetHeaddst().y == dst_apple.y)
 			{
 				snake.Grow();
 				delay--;
@@ -196,7 +208,7 @@ int main(int argc, char** argv)
 						goto randomize;
 					counter2++;
 				}
-				dst_ap = { sq % 23 * BL_SIZE, sq % 15 * BL_SIZE, BL_SIZE, BL_SIZE };
+				dst_apple = { sq % 23 * BL_SIZE, sq % 15 * BL_SIZE, BL_SIZE, BL_SIZE };
 			}
 
 			switch (snake.GetDirection())
@@ -232,20 +244,22 @@ int main(int argc, char** argv)
 
 #pragma region rendering
 
-		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-		SDL_RenderClear(ren);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
 		if (inMenu) {
-			SDL_RenderCopyEx(ren, tex_st, NULL, &dst_st, 0, NULL, SDL_FLIP_NONE);
-			SDL_RenderPresent(ren);
+			
+			SDL_RenderCopyEx(renderer, tex_start, NULL, &dst_start, 0, NULL, SDL_FLIP_NONE);
+			//SDL_RenderCopyEx(renderer, tex_st, NULL, &dst_st, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderPresent(renderer);
 		}
 		if (!inMenu && !inSettings) {
 			counter = 0;
 			while (snake.GetSnakedst()[counter].w == BL_SIZE) {
-				SDL_RenderCopyEx(ren, tex_pl, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, tex_player, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
 				counter++;
 			}
-			SDL_RenderCopyEx(ren, tex_ap, NULL, &dst_ap, 0, NULL, SDL_FLIP_NONE);
-			SDL_RenderPresent(ren);
+			SDL_RenderCopyEx(renderer, tex_apple, NULL, &dst_apple, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderPresent(renderer);
 
 			SDL_Delay(delay);
 
@@ -259,9 +273,9 @@ int main(int argc, char** argv)
 
 #pragma region end
 
-	SDL_DestroyTexture(tex_pl);
-	SDL_DestroyTexture(tex_ap);
-	SDL_DestroyRenderer(ren);
+	SDL_DestroyTexture(tex_player);
+	SDL_DestroyTexture(tex_apple);
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 	return 0;
