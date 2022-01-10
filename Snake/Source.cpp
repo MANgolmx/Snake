@@ -51,8 +51,8 @@ int main(int argc, char** argv)
 	if (!(r & IMG_INIT_PNG))
 		printf("We cann't use PNG files!");
 
-	if (TTF_Init() < 0) {
-		printf("TTF_Init: %s\n", TTF_GetError());
+	if (TTF_Init() != 0) {
+		printf("TTF Init error %s\n", TTF_GetError());
 		exit(2);
 	}
 
