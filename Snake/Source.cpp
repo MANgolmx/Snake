@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_stdinc.h>
 #include "Snake.h"
 
 #define BL_SIZE 50
@@ -19,14 +20,14 @@ bool isBelong(int x, int y, SDL_Rect r)
 	return false;
 }
 
-SDL_Texture* renderText(std::string& message, const std::string& fontFile, SDL_Color color, int fontSize, SDL_Renderer* renderer)
+SDL_Texture * renderText(std::string & message, const std::string & fontFile, SDL_Color color, int fontSize, SDL_Renderer * renderer)
 {
 	//Открываем шрифт
 	TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
 	if (font == nullptr)
 		return nullptr;
 
-	//Сначала нужно отобразить на поверхность с помощью TTF_RenderText,
+	//Сначала нужно отобрази///ть на поверхность с помощью TTF_RenderText,
 	//затем загрузить поверхность в текстуру
 	SDL_Surface* surf = TTF_RenderText_Blended(font, message.c_str(), color);
 	if (surf == nullptr) {
