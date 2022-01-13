@@ -34,9 +34,8 @@ void Snake::SetPartsDirections()
 	SnakePart* tmp = head;
 	int i = 0;
 	for (tmp; tmp->next != NULL; tmp = tmp->next);
-	for (tmp; tmp->prev != NULL; tmp = tmp->prev) {
+	for (tmp; tmp->prev != NULL; tmp = tmp->prev)
 		tmp->direction = tmp->prev->direction;
-	}
 }
 
 int Snake::GetSpeed()
