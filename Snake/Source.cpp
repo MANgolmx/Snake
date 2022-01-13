@@ -117,7 +117,6 @@ int main(int argc, char** argv)
 	SDL_QueryTexture(tex_off, NULL, NULL, &off_w, &off_h);
 	SDL_Rect dst_off = { win_width / 2 + portal_walls_w / 2 + 40, 250,off_w,off_h };
 
-
 	bool isRunning = true;
 	bool inMenu = true;
 	bool inSettings = false;
@@ -158,33 +157,6 @@ int main(int argc, char** argv)
 		printf("Texture wasn't load!  %s\n", SDL_GetError());
 		exit(1);
 	}
-
-	/*
-	SDL_Texture* tex_bg = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_bg == NULL)
-	{
-		printf("Texture wasn't load!  %s\n", SDL_GetError());
-		exit(1);
-	}
-
-
-	surf = IMG_Load("Images/Flag.png");
-	if (surf == NULL)
-	{
-		printf("Picture wasn't load!  %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	SDL_Rect dst_fl = { 100, 100, surf->w * scale_fl, surf->h * scale_fl };
-
-	SDL_Texture* tex_fl = SDL_CreateTextureFromSurface(ren, surf);
-	if (tex_pl == NULL)
-	{
-		printf("Texture wasn't load!  %s\n", SDL_GetError());
-		exit(1);
-	}
-	SDL_FreeSurface(surf);
-	*/
 
 #pragma endregion initialization
 
