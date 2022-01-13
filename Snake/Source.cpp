@@ -99,6 +99,24 @@ int main(int argc, char** argv)
 	SDL_QueryTexture(tex_back, NULL, NULL, &back_w, &back_h);
 	SDL_Rect dst_back = { win_width / 2 - back_w / 2,win_height - 150,back_w,back_h };
 
+	int portal_walls_w, portal_walls_h;
+	std::string portal_walls = "TURN ON/OFF PORTAL WALLS";
+	SDL_Texture* tex_portal_walls = renderText(portal_walls, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
+	SDL_QueryTexture(tex_portal_walls, NULL, NULL, &portal_walls_w, &portal_walls_h);
+	SDL_Rect dst_portal_walls = { win_width / 2 - portal_walls_w / 2 - 40, 250,portal_walls_w,portal_walls_h };
+
+	int on_w, on_h;
+	std::string on = "ON";
+	SDL_Texture* tex_on = renderText(on, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
+	SDL_QueryTexture(tex_on, NULL, NULL, &on_w, &on_h);
+	SDL_Rect dst_on = { win_width / 2 + portal_walls_w / 2 + 40,250,on_w,on_h };
+
+	int off_w, off_h;
+	std::string off = "OFF";
+	SDL_Texture* tex_off = renderText(off, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
+	SDL_QueryTexture(tex_off, NULL, NULL, &off_w, &off_h);
+	SDL_Rect dst_off = { win_width / 2 + portal_walls_w / 2 + 40, 250,off_w,off_h };
+
 
 	bool isRunning = true;
 	bool inMenu = true;
@@ -203,6 +221,10 @@ int main(int argc, char** argv)
 					inMenu = true;
 					inSettings = false;
 				}
+				if (isBelong(mx, my, dst_portal_walls) && inSettings) {
+					if(snake.IsPortals()) snake.SetPortals(false);
+					else if(!snake.IsPortals()) snake.SetPortals(true);
+				}
 				break;
 			}
 		}
@@ -275,6 +297,11 @@ int main(int argc, char** argv)
 		}
 		else if (inSettings) {
 			SDL_RenderCopyEx(renderer, tex_back, NULL, &dst_back, 0, NULL, SDL_FLIP_NONE);
+
+			if (snake.IsPortals()) SDL_RenderCopyEx(renderer, tex_on, NULL, &dst_on, 0, NULL, SDL_FLIP_NONE);
+			else SDL_RenderCopyEx(renderer, tex_off, NULL, &dst_off, 0, NULL, SDL_FLIP_NONE);
+			
+			SDL_RenderCopyEx(renderer, tex_portal_walls, NULL, &dst_portal_walls, 0, NULL, SDL_FLIP_NONE);
 
 			SDL_RenderPresent(renderer);
 		}

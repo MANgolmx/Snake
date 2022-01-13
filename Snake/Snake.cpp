@@ -51,6 +51,7 @@ bool Snake::IsPortals()
 
 void Snake::SetPortals(bool port)
 {
+	portals = port;
 }
 
 void Snake::Grow()
