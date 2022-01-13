@@ -93,6 +93,13 @@ int main(int argc, char** argv)
 	SDL_QueryTexture(tex_settings, NULL, NULL, &settings_w, &settings_h);
 	SDL_Rect dst_settings = { dst_start.x + (start_w - settings_w) / 2,dst_start.y + 180,settings_w,settings_h };
 
+	int back_w, back_h;
+	std::string back = "BACK";
+	SDL_Texture* tex_back = renderText(back, "fonts\\Roboto\\Roboto-Light.ttf", white, 50, renderer);
+	SDL_QueryTexture(tex_back, NULL, NULL, &back_w, &back_h);
+	SDL_Rect dst_back = { win_width / 2 - back_w / 2,win_height - 150,back_w,back_h };
+
+
 	bool isRunning = true;
 	bool inMenu = true;
 	bool inSettings = false;
@@ -186,9 +193,15 @@ int main(int argc, char** argv)
 			case SDL_MOUSEBUTTONDOWN:
 				int mx, my;
 				SDL_GetMouseState(&mx, &my);
-				if (isBelong(mx, my, dst_start)) {
+				if (isBelong(mx, my, dst_start) && inMenu)
 					inMenu = false;
-					SDL_DestroyTexture(tex_start);
+				if (isBelong(mx, my, dst_settings) && inMenu) {
+					inMenu = false;
+					inSettings = true;
+				}
+				if (isBelong(mx, my, dst_back) && inSettings) {
+					inMenu = true;
+					inSettings = false;
 				}
 				break;
 			}
@@ -260,7 +273,12 @@ int main(int argc, char** argv)
 			SDL_RenderCopyEx(renderer, tex_settings, NULL, &dst_settings, 0, NULL, SDL_FLIP_NONE);
 			SDL_RenderPresent(renderer);
 		}
-		if (!inMenu && !inSettings) {
+		else if (inSettings) {
+			SDL_RenderCopyEx(renderer, tex_back, NULL, &dst_back, 0, NULL, SDL_FLIP_NONE);
+
+			SDL_RenderPresent(renderer);
+		}
+		else if (!inMenu && !inSettings) {
 			counter = 0;
 			while (snake.GetSnakedst()[counter].w == BL_SIZE) {
 				SDL_RenderCopyEx(renderer, tex_player, NULL, &snake.GetSnakedst()[counter], 0, NULL, SDL_FLIP_NONE);
