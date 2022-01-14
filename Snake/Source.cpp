@@ -81,6 +81,8 @@ int main(int argc, char** argv)
 
 	SDL_Color white = { 255,255,255,255 };
 
+#pragma region TEXTS
+
 	std::string start = "PLAY";
 	SDL_Texture* tex_start = renderText(start, "fonts\\Roboto\\Roboto-Light.ttf", white, 128, renderer);
 	int start_w, start_h;
@@ -116,6 +118,8 @@ int main(int argc, char** argv)
 	SDL_Texture* tex_off = renderText(off, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
 	SDL_QueryTexture(tex_off, NULL, NULL, &off_w, &off_h);
 	SDL_Rect dst_off = { win_width / 2 + portal_walls_w / 2 + 40, 250,off_w,off_h };
+
+#pragma endregion
 
 	bool isRunning = true;
 	bool inMenu = true;
