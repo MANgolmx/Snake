@@ -238,22 +238,28 @@ int main(int argc, char** argv)
 			case 3:	snake.SetHeaddst(snake.GetHeaddst().x - snake.GetSpeed(), snake.GetHeaddst().y, snake.GetHeaddst().w, snake.GetHeaddst().h); break;
 			}
 
+			snake.SetSnakedst();
+
 			if (!snake.IsPortals() &&
-					(snake.GetHeaddst().x < 0 ||
+				(snake.GetHeaddst().x < 0 ||
 					snake.GetHeaddst().x + snake.GetHeaddst().w > win_width ||
 					snake.GetHeaddst().y < 0 ||
 					snake.GetHeaddst().y + snake.GetHeaddst().h > win_height))
+			{
 				snake.Death();
-
-			snake.SetSnakedst();
+				snake.SetSnakedst();
+			}
 
 			counter = 1;
 			while (snake.GetSnakedst()[counter].w == BL_SIZE)
 			{
 				if (snake.GetSnakedst()[counter].x == snake.GetHeaddst().x &&
 					snake.GetSnakedst()[counter].y == snake.GetHeaddst().y)
+				{
 					snake.Death();
-				counter++;
+					snake.SetSnakedst();
+				}
+					counter++;
 			}
 
 		}

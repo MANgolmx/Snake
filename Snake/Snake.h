@@ -41,10 +41,11 @@ public:
 	bool IsPortals();
 	void SetPortals(bool port);
 
-	void Grow();
+	void Grow(int direction = -1);
 	void Death();
 
 	void Clear();
+	void Revive();
 
 	SDL_Rect GetHeaddst();
 	void SetHeaddst(int x = 0, int y = 0, int w = 50, int h = 50);

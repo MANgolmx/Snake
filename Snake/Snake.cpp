@@ -53,17 +53,19 @@ void Snake::SetPortals(bool port)
 	portals = port;
 }
 
-void Snake::Grow()
+void Snake::Grow(int direction)
 {
 	SnakePart* tmp;
 	for (tmp = head; tmp->next != NULL; tmp = tmp->next);
-	tmp->AddPart(tmp->direction, GetSpeed());
+	if (direction == -1)
+		direction = tmp->direction;
+	tmp->AddPart(direction, GetSpeed());
 }
 
 void Snake::Death()
 {
 	isDead = true;
-	Clear();
+	Revive();
 }
 
 void Snake::Clear()
@@ -75,6 +77,17 @@ void Snake::Clear()
 	for (int i = 1; i < 384;i++)
 		if (snakeParts[i].w == 50)
 			snakeParts[i].x = snakeParts[i].y = snakeParts[i].w = snakeParts[i].h = -1;
+}
+
+void Snake::Revive()
+{
+	int dir = head->direction;
+	if (head->direction == 0)
+		dir++;
+	Clear();
+	Grow(dir - 1);
+	Grow(dir - 1);
+	isDead = true;
 }
 
 SDL_Rect Snake::GetHeaddst()
