@@ -19,7 +19,7 @@ private:
 		void AddPart(int direction, int speed);
 	};
 
-	SDL_Rect rects[384];
+	SDL_Rect snakeParts[384];
 	SDL_Rect dst_pl = { 600, 400, 50, 50};
 	SnakePart* head;
 	bool isDead = false;
@@ -43,6 +43,8 @@ public:
 
 	void Grow();
 	void Death();
+
+	void Clear();
 
 	SDL_Rect GetHeaddst();
 	void SetHeaddst(int x = 0, int y = 0, int w = 50, int h = 50);

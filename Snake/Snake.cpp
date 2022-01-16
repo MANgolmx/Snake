@@ -63,6 +63,18 @@ void Snake::Grow()
 void Snake::Death()
 {
 	isDead = true;
+	Clear();
+}
+
+void Snake::Clear()
+{
+	SnakePart* tmp = head;
+	for (tmp; tmp->next != NULL; tmp = tmp->next);
+	for (tmp; tmp->prev != NULL; tmp = tmp->prev)
+		tmp->next = NULL;
+	for (int i = 1; i < 384;i++)
+		if (snakeParts[i].w == 50)
+			snakeParts[i].x = snakeParts[i].y = snakeParts[i].w = snakeParts[i].h = -1;
 }
 
 SDL_Rect Snake::GetHeaddst()
@@ -88,11 +100,11 @@ SDL_Rect* Snake::SetSnakedst()
 	int counter = 0;
 	for (tmp = head; tmp != NULL; tmp = tmp->next)
 	{
-		rects[counter].w = rects[counter].h = 50;
+		snakeParts[counter].w = snakeParts[counter].h = 50;
 		int x = this->GetHeaddst().x;
 		int y = this->GetHeaddst().y;
 		int counter2 = 0;
-		if (!isDead && !portals)
+		if (!portals)
 			for (SnakePart* tmp2 = head; tmp2 != tmp; tmp2 = tmp2->next)
 			{
 				     if (this->GetPartsDirections()[counter2] == 0) y += 50;
@@ -101,7 +113,7 @@ SDL_Rect* Snake::SetSnakedst()
 				else if (this->GetPartsDirections()[counter2] == 3) x += 50;
 				counter2++;
 			}
-		if(!isDead && portals)
+		if(portals)
 			for (SnakePart* tmp2 = head; tmp2 != tmp; tmp2 = tmp2->next)
 			{
 				     if (this->GetPartsDirections()[counter2] == 0) y += 50;
@@ -114,16 +126,16 @@ SDL_Rect* Snake::SetSnakedst()
 				if (y < 0) y = 750;
 				counter2++;
 			}
-		rects[counter].x = x;
-		rects[counter].y = y;
+		snakeParts[counter].x = x;
+		snakeParts[counter].y = y;
 		counter++;
 	}
-	return rects;
+	return snakeParts;
 }
 
 SDL_Rect* Snake::GetSnakedst()
 {
-	return rects;
+	return snakeParts;
 }
 
 Snake::SnakePart::SnakePart(int dir, int sp, SnakePart* pr)
