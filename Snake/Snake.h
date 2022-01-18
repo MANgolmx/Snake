@@ -22,6 +22,8 @@ private:
 	SDL_Rect snakeParts[384];
 	SDL_Rect dst_pl = { 600, 400, 50, 50};
 	SnakePart* head;
+	int score;
+	int bestScore;
 	bool isDead = false;
 	bool portals = true;
 
@@ -40,6 +42,10 @@ public:
 	int GetSpeed();
 	bool IsPortals();
 	void SetPortals(bool port);
+
+	void SaveScore();
+	int GetScore();
+	void ReadScore();
 
 	void Grow(int direction = -1);
 	void Death();

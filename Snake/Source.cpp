@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -48,6 +49,8 @@ int main(int argc, char** argv)
 
 #pragma region initialization
 	Snake snake;
+
+	snake.ReadScore();
 
 	int win_width = 1200, win_height = 800;
 
@@ -118,6 +121,12 @@ int main(int argc, char** argv)
 	SDL_Texture* tex_off = renderText(off, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
 	SDL_QueryTexture(tex_off, NULL, NULL, &off_w, &off_h);
 	SDL_Rect dst_off = { win_width / 2 + portal_walls_w / 2 + 40, 250,off_w,off_h };
+
+	int score_w, score_h;
+	std::string score = "BEST SCORE:  ";
+	SDL_Texture* tex_score = renderText(score, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
+	SDL_QueryTexture(tex_score, NULL, NULL, &score_w, &score_h);
+	SDL_Rect dst_score = { win_width / 2 - score_w / 2, 200,score_w,score_h };
 
 #pragma endregion
 
@@ -272,7 +281,13 @@ int main(int argc, char** argv)
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 		if (inMenu) {
-			
+			score = "BEST SCORE:  ";
+			score += std::to_string(snake.GetScore());
+			tex_score = renderText(score, "fonts\\Roboto\\Roboto-Light.ttf", white, 60, renderer);
+			SDL_QueryTexture(tex_score, NULL, NULL, &score_w, &score_h);
+			dst_score = { win_width / 2 - score_w / 2, 200,score_w,score_h };
+			SDL_RenderCopyEx(renderer, tex_score, NULL, &dst_score, 0, NULL, SDL_FLIP_NONE);
+
 			SDL_RenderCopyEx(renderer, tex_start, NULL, &dst_start, 0, NULL, SDL_FLIP_NONE);
 			SDL_RenderCopyEx(renderer, tex_settings, NULL, &dst_settings, 0, NULL, SDL_FLIP_NONE);
 			SDL_RenderPresent(renderer);
