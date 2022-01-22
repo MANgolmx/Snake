@@ -3,7 +3,8 @@
 
 Snake::Snake()
 {
-	bestScore = score = 1;
+	bestScore = 4;
+	score = 1;
 	head = new SnakePart(0, 50);
 	this->Grow();
 	this->Grow();
@@ -62,8 +63,8 @@ void Snake::Grow(int direction)
 		direction = tmp->direction;
 	tmp->AddPart(direction, GetSpeed());
 	score++;
-
-	SaveScore();
+	if (score > bestScore)
+		SaveScore();
 }
 
 int Snake::GetScore()
@@ -98,21 +99,16 @@ void Snake::SaveScore()
 	FILE* f;
 	if (fopen_s(&f, "save.txt", "wt") != NULL)
 	{
-		std::cout << "[ERROR OCCURED] Can not open sva.txt";
+		std::cout << "[ERROR OCCURED] Can not open save.txt";
 		system("pause");
 		return;
 	}
 
 	int tmp;
 
-	fscanf_s(f, "%i", &tmp);
-
-	if (tmp < score || tmp < bestScore)
-	{
-		if (score > bestScore)
-			bestScore = score;
-		fprintf(f, "%i", bestScore);
-	}
+	if (score > bestScore)
+		bestScore = score;
+	fprintf(f, "%i", bestScore);
 
 	fclose(f);
 }
