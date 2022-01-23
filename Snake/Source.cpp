@@ -163,7 +163,7 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 
-	SDL_Rect dst_apple = { 150, 600, surf->w, surf->h};
+	SDL_Rect dst_apple = { 550, 150, surf->w, surf->h};
 	SDL_Texture* tex_apple = SDL_CreateTextureFromSurface(renderer, surf);
 	if (tex_apple == NULL)
 	{
