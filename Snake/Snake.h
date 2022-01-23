@@ -20,7 +20,7 @@ private:
 	};
 
 	SDL_Rect snakeParts[384];
-	SDL_Rect dst_pl = { 600, 400, 50, 50};
+	SDL_Rect dst_pl = { 550, 350, 50, 50};
 	SnakePart* head;
 	int score;
 	int bestScore;
