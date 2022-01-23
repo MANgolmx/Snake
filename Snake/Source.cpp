@@ -186,7 +186,10 @@ int main(int argc, char** argv)
 			case SDL_KEYDOWN:
 				switch (ev.key.keysym.scancode)
 				{
-				case SDL_SCANCODE_ESCAPE: isRunning = false; break;
+				case SDL_SCANCODE_ESCAPE: if (inMenu) isRunning = false;
+					if (inSettings) inSettings = false; inMenu = true;
+					if (!inMenu && !inSettings) snake.Death(); inMenu = true;
+						break;
 				case SDL_SCANCODE_UP: if (snake.GetDirection() != 2 && snake.GetSnakedst()[0].x != snake.GetSnakedst()[1].x && snake.GetSnakedst()[0].y != snake.GetSnakedst()[1].y - 50) snake.SetDirection(0); break;
 				case SDL_SCANCODE_RIGHT: if (snake.GetDirection() != 3 && snake.GetSnakedst()[0].x != snake.GetSnakedst()[1].x + 50 && snake.GetSnakedst()[0].y != snake.GetSnakedst()[1].y) snake.SetDirection(1); break;
 				case SDL_SCANCODE_DOWN: if (snake.GetDirection() != 0 && snake.GetSnakedst()[0].x != snake.GetSnakedst()[1].x && snake.GetSnakedst()[0].y != snake.GetSnakedst()[1].y + 50) snake.SetDirection(2); break;
